@@ -19,7 +19,8 @@ class SoundViewController: UIViewController {
     
     // Other global variables
     var audioRecorder : AVAudioRecorder? = nil
-    
+    var audioPlayer : AVAudioPlayer?
+    var audioURL : URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +47,7 @@ class SoundViewController: UIViewController {
             // Set home directory as working directory
             let basePath : String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
             let pathComponents = [basePath, "audio.m4a"] // set file name
-            let audioURL = NSURL.fileURL(withPathComponents: pathComponents)! // construct complete path to file
-            
-            print("####################")
-            print(audioURL)
-            print("####################")
+            audioURL = NSURL.fileURL(withPathComponents: pathComponents)! // construct complete path to file
             
             // Create settings for audio recorder object
             
@@ -61,15 +58,15 @@ class SoundViewController: UIViewController {
             
             // Create audiorecorder object
             
-            audioRecorder = try AVAudioRecorder(url: audioURL, settings: settings)
+            audioRecorder = try AVAudioRecorder(url: audioURL!, settings: settings)
             audioRecorder!.prepareToRecord()
-
+            
         } catch let error as NSError {
             
             print("Error in AV function call: \(error)")
             
         }
-
+        
     }
     
     @IBAction func recordTapped(_ sender: Any) {
@@ -92,8 +89,13 @@ class SoundViewController: UIViewController {
     
     @IBAction func playTapped(_ sender: Any) {
         
-        
-        
+        do {
+            
+            audioPlayer = try AVAudioPlayer(contentsOf: audioURL!)
+            audioPlayer!.play()
+            
+        } catch {}
+
     }
     
     @IBAction func addTapped(_ sender: Any) {
