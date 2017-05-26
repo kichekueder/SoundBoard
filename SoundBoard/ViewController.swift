@@ -40,6 +40,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
         
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let sound = sounds[indexPath.row]
@@ -65,6 +66,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let sound = sounds[indexPath.row]
         cell.textLabel?.text = sound.name
         return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let sound = sounds[indexPath.row]
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            context.delete(sound)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            
+            do {
+            sounds = try context.fetch(Sound.fetchRequest())
+            } catch {}
+            
+            tableView.reloadData()
+            
+        }
         
     }
     
