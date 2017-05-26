@@ -100,6 +100,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="ul8-eI-eHI" id="jlf-b6-Yzv"/>
+                        <outlet property="playButton" destination="nF0-c9-8cT" id="1t3-f9-2sE"/>
                         <outlet property="recordButton" destination="KsS-C0-gPc" id="p6X-gr-X6x"/>
                         <outlet property="soundName" destination="4js-G4-bzg" id="5Pp-fG-MXe"/>
                     </connections>

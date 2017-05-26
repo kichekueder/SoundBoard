@@ -16,6 +16,8 @@ class SoundViewController: UIViewController {
     // Outlets from VC
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var soundName: UITextField!
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
     
     // Other global variables
     var audioRecorder : AVAudioRecorder? = nil
@@ -26,6 +28,8 @@ class SoundViewController: UIViewController {
         super.viewDidLoad()
         
         setupRecorder()
+        playButton.isEnabled = false
+        addButton.isEnabled = false
         
     }
     
@@ -76,6 +80,8 @@ class SoundViewController: UIViewController {
             audioRecorder?.stop()   // Stop Recording
             
             recordButton.setTitle("Record", for: .normal)   // Change button to "Record"
+            playButton.isEnabled = true
+            addButton.isEnabled = true
             
         } else {
             
@@ -100,8 +106,22 @@ class SoundViewController: UIViewController {
     
     @IBAction func addTapped(_ sender: Any) {
         
+        if soundName.text! != "" {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let sound = Sound(context: context)
+        sound.name = soundName.text
+        sound.audio = NSData(contentsOf: audioURL!)
         
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
+        navigationController?.popViewController(animated: true)
+        
+        } else {
+            
+            soundName.placeholder = "Give it a name!"
+        
+        }
+
     }
     
     
